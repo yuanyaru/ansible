@@ -1,0 +1,37 @@
+一. 安装
+
+1、 yum install -y ansible
+
+2、ansible --version
+
+二.  第一条命令
+
+在完成安装后我们可以运行一个简单命令查看ansible是否可以正常工作。
+
+1、创建hosts文件
+
+ $ mkdir -p /etc/ansible  #创建配置目录
+
+ $ vi /etc/ansible/hosts   #编辑主机列表文件，在文件中输入需要管理的主机IP地址
+
+例如：
+[node]
+192.168.100.61
+192.168.100.62
+192.168.100.63
+192.168.100.64
+
+2. 本机的public SSH key必须在需要管理的主机的``authorized_keys``中
+
+（1）生成本机的 SSH key
+ $ssh-keygen
+
+（2） 将本机的 public SSH key 添加到要管理的主机的``authorized_keys``中：
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.61
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.62
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.63
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.64
+
+（3）测试
+$ ansible all -m ping  #运行ping 命令
+# $ ansible k8s -m shell -a "systemctl disable firewalld" # 在名称为k8s的主机列表下关闭防火墙
